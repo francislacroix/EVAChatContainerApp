@@ -10,7 +10,8 @@ module "OpenWebUIContainerApp" {
   source = "../modules/containerapp"
 
   ContainerAppEnvironmentName                 = var.ContainerAppEnvironmentName
-  ContainerAppEnvironmentResourceGroupName    = var.InfrastructureResourceGroupName != null ? var.InfrastructureResourceGroupName : var.ResourceGroupName
+  AppIdentityName                             = var.AppIdentityName
+  InfrastructureResourceGroupName             = var.InfrastructureResourceGroupName != null ? var.InfrastructureResourceGroupName : var.ResourceGroupName
   SubscriptionID                              = var.SubscriptionID
   ResourceGroupName                           = azurerm_resource_group.applicationresourcegroup.name
   ContainerAppName                            = var.OpenWebUIName
@@ -21,7 +22,9 @@ module "OpenWebUIContainerApp" {
   TargetPort                                  = var.OpenWebUIPort
   Transport                                   = var.OpenWebUITransport
   ExternalEnabled                             = var.OpenWebUIExtenalEnabled
+  EnvironmentVariables                        = var.OpenWebUIEnvironmentVariables
   AzureFileStorageMounts                      = var.OpenWebUIAzureFileStorageMounts
+  AzureFileStorageMountOptions                = var.OpenWebUIAzureFileStorageMountOptions
 }
 
 # Create the OpenWebUIPipelines container 
@@ -29,7 +32,8 @@ module "OpenWebUIPipelinesContainerApp" {
   source = "../modules/containerapp"
 #required paramaeters to create OpenWebUIPipelines container app     
   ContainerAppEnvironmentName                 = var.ContainerAppEnvironmentName
-  ContainerAppEnvironmentResourceGroupName    = var.InfrastructureResourceGroupName != null ? var.InfrastructureResourceGroupName : var.ResourceGroupName
+  AppIdentityName                             = var.AppIdentityName
+  InfrastructureResourceGroupName             = var.InfrastructureResourceGroupName != null ? var.InfrastructureResourceGroupName : var.ResourceGroupName
   SubscriptionID                              = var.SubscriptionID
   ResourceGroupName                           = azurerm_resource_group.applicationresourcegroup.name
   ContainerAppName                            = var.OpenWebUIPipelinesName

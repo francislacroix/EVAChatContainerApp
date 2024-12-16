@@ -32,7 +32,7 @@ variable "OpenWebUITransport" {
 
 variable "OpenWebUIExtenalEnabled" {
     description = "Transport protocol for the OpenWebUI container app"
-    type        = string
+    type        = bool
 }
 
 variable "OpenWebUIEnvironmentVariables" {
@@ -45,4 +45,10 @@ variable "OpenWebUIAzureFileStorageMounts" {
     description = "Environment variables for mounting storage"
     type        = map(string)
     default     = {}
+}
+
+variable "OpenWebUIAzureFileStorageMountOptions" {
+    description = "Mount options for the Azure file storage"
+    type        = string
+    default     = ""
 }

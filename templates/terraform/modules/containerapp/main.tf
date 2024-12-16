@@ -83,6 +83,7 @@ resource "azurerm_container_app" "containerapp" {
           transport        = var.Transport
           interval_seconds = 20
 
+
           #TODO: Implement ip_security_restriction block if needed
         }
       }
@@ -108,8 +109,44 @@ resource "azurerm_container_app" "containerapp" {
   }
 }
 
+# Add the Mount options if using Azure File Storage
+resource "azapi_update_resource" "container_app_add_mount_options" {
+  count = var.AzureFileStorageMountOptions != null && length(var.AzureFileStorageMountOptions) > 0 ? 1 : 0
+
+  type        = "Microsoft.App/containerApps@2024-03-01"
+  resource_id = azurerm_container_app.containerapp.id
+
+  body = {
+    properties = {
+      template = {
+        volumes = [
+          {
+            mountOptions = var.AzureFileStorageMountOptions
+          }
+        ]
+        containers = [
+          {
+            # We need to recreate the env block to include the MOUNT_OPTIONS_SET
+            env = [
+              for key, value in merge(var.EnvironmentVariables, {MOUNT_OPTIONS_SET="true"}) :
+                {
+                  name     = key
+                  value    = value
+                }
+            ]
+          }
+        ]
+      }
+    }
+  }
+#Links to the actua container app created above
+  lifecycle {
+    replace_triggered_by = [azurerm_container_app.containerapp]
+  }
+}
+
 # Manually add the additional Port Mappings through the AzAPI module, since it's not supported by the azurerm_container_app provider
-resource "azapi_update_resource" "container_app_api" {
+resource "azapi_update_resource" "container_app_add_additional_ports" {
   count = var.AdditionalTCPPorts != null && length(var.AdditionalTCPPorts) > 0 ? 1 : 0
 
   type        = "Microsoft.App/containerApps@2024-03-01"

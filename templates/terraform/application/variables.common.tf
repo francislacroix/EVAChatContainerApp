@@ -29,3 +29,8 @@ variable "ContainerRegistryServer" {
     description = "Name of the container registry server"
     type        = string
 }
+
+variable "AppIdentityName" {
+    description = "Name of the user assigned identity"
+    type        = string
+}

@@ -104,6 +104,12 @@ variable "AzureFileStorageMounts" {
     default     = {}
 }
 
+variable "AzureFileStorageMountOptions" {
+    description = "Azure file storage mount options"
+    type        = string
+    default     = ""
+}
+
 variable "AppIdentityName" {
     description = "Name of the user assigned identity"
     type        = string
